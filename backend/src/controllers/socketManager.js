@@ -6,12 +6,20 @@ let message = {};
 let timeOnline = {};
 export const connectToSocket = (server) => {
     //setting connectiong with socket.io
+    const allowedOrigins = [
+        "https://video-meetingfrontend.onrender.com",
+        "http://localhost:5173"
+    ];
     const io = new Server(server, {
         //handle cors error od io
         cors: {
-            origin: "*",
-            methods: ["GET", "POST"],
-            allowedHeaders: ["*"],
+            origin: (origin, callback) => {
+                if (!origin || allowedOrigins.includes(origin)) {
+                    callback(null, true);
+                } else {
+                    callback(new Error("Not allowed by CORS"));
+                }
+            },
             credentials: true
         }
     });
@@ -26,7 +34,7 @@ export const connectToSocket = (server) => {
             console.log("=== USER JOINING CALL ===");
             console.log("Socket ID:", socket.id);
             console.log("Path/Room:", path);
-            
+
             //join-call (from frontend:: socket.emit("join-call", roomId);) event request handler ::path is same as roomId
             // NOw :::::::::::handle the join request
             //just in case connection path is undefined
@@ -79,7 +87,7 @@ export const connectToSocket = (server) => {
                 if (message[matchingRoom] == undefined) {
                     message[matchingRoom] = []
                 }
-                
+
                 message[matchingRoom].push({ 'sender': sender, "data": data, "socket-id-sender": socket.id });
                 console.log("message", matchingRoom, ":", sender, data);
 
