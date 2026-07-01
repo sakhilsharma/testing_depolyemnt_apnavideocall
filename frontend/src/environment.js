@@ -1,4 +1,4 @@
-const IS_PROD = false;
+const IS_PROD = import.meta.env.PROD;;
 const server = IS_PROD ?
     "https://video-call-rmjo.onrender.com" //production url
     :
