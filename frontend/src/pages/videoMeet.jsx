@@ -225,9 +225,9 @@ export default function VideoMeetComponent() {
 
     // Debug effect to monitor videos state
     useEffect(() => {
-        console.log("=== VIDEOS STATE CHANGED ===");
-        console.log("Videos array:", videos);
-        console.log("Videos length:", videos.length);
+        //console.log("=== VIDEOS STATE CHANGED ===");
+        //console.log("Videos array:", videos);
+        //console.log("Videos length:", videos.length);
     }, [videos]);
 
 
@@ -519,74 +519,103 @@ export default function VideoMeetComponent() {
             <div>
                 {askForUsername === true ?
                     <div className="LobbyArea">
-                        <h2>Enter Into Lobby</h2>
-                        <TextField
-                            id="outlined-basic"
-                            label="Enter Name"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            variant="outlined"
-                        /> 
-                        {username ?<Button variant="contained" onClick={connect}>
-                            Connect
-                        </Button> :
-                        <Button variant="contained" disabled>
-                        Connect
-                    </Button>
-                         }
-                        
+                        <div className="lobbyCard">
+                            <h2>Enter Into Lobby</h2>
+                            <TextField
+                                id="outlined-basic"
+                                label="Enter Name"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                variant="outlined"
+                            />
+                            {username ? <Button variant="contained" onClick={connect}>
+                                Connect
+                            </Button> :
+                                <Button variant="contained" disabled>
+                                    Connect
+                                </Button>
+                            }
 
-                        <div className="video-container">
-                            <video ref={localVideoRef} autoPlay muted></video>
+                            <div className="video-container">
+                                <video ref={localVideoRef} autoPlay muted></video>
+                            </div>
                         </div>
                     </div>
-
 
                     : <div className='meetVideoContainer'>
 
                         {showModal ? <div className="chatRoom">
-                            <h1>Chat</h1>
-                            <IconButton className="closeButton" onClick={chatMessage}>
-                                <CloseIcon />
-                            </IconButton>
-                            <div className="chattingDisplay">
+                            <div className="chatHeader">
+                                <h1>Chat</h1>
+                                <IconButton className="closeButton" onClick={chatMessage}>
+                                    <CloseIcon />
+                                </IconButton>
+                            </div>
 
-                                {//we need to check the length of messages as if the there is no message it will show messages is not a map
-                                }
+                            <div className="chattingDisplay">
                                 {
                                     messages.length !== 0 ? messages.map((item, index) => {
-
-                                        console.log(messages);
                                         return (
-                                            <div style={{ marginBottom: "20px" }} key={index}>
-                                                <p style={{ fontWeight: "bold" }}>{item.sender}</p>
-                                                <p>{item.data}</p>
+                                            <div className="chatBubble" key={index}>
+                                                <span className="senderName">{item.sender}</span>
+                                                <span className="messageText">{item.data}</span>
                                             </div>
                                         )
-                                    }) : <p>No Messages Yet</p>
+                                    }) : <p className="emptyChat">No messages yet</p>
                                 }
                             </div>
 
                             <div className="chatContainer">
-
                                 <div className="chattingArea">
-                                    <TextField label="Enter Message" id="outlined-basic" variant="outlined" value={message} onChange={(e) => setMessage(e.target.value)} />
+                                    <TextField
+                                        label="Enter Message"
+                                        id="outlined-basic"
+                                        variant="outlined"
+                                        size="small"
+                                        value={message}
+                                        onChange={(e) => setMessage(e.target.value)}
+                                    />
                                     <Button variant="contained" onClick={sendMessage}>Send</Button>
-
-
                                 </div>
                             </div>
-
                         </div> :
                             <></>
                         }
 
+                        <div className="conferenceView">
+                            {
+                                videos.map((video) => (
+                                    <div key={video.socketId}>
+                                        <video
+                                            className="conferenceClients"
+                                            data-socket={video.socketId}
+                                            ref={
+                                                ref => {
+                                                    {
+                                                        if (ref && video.stream) {
+                                                            ref.srcObject = video.stream;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            autoPlay
+                                        >
+                                        </video>
+                                    </div>
+                                ))
+                            }
+                        </div>
+
+                        <div className="selfViewWrapper">
+                            <video className='meetUserVideo' ref={localVideoRef} autoPlay muted></video>
+                            <span className="selfViewLabel">You</span>
+                        </div>
 
                         <div className="buttonContainer">
                             <IconButton onClick={handleVideo} style={{ color: 'white' }}>
                                 {(video === true) ? <VideocamIcon /> : <VideocamOffIcon />}
                             </IconButton>
-                            <IconButton onClick={handleEndCall} style={{ color: 'red' }}>
+                            <IconButton onClick={handleEndCall} style={{ color: '#ff5c5c' }}>
                                 <CallEndIcon />
                             </IconButton>
                             <IconButton onClick={handleAudio} style={{ color: 'white' }}>
@@ -604,35 +633,6 @@ export default function VideoMeetComponent() {
                                     <ChatIcon />
                                 </IconButton>
                             </Badge>
-                        </div>
-                        <video className='meetUserVideo' ref={localVideoRef} autoPlay muted></video>
-
-                        <div className="conferenceView">
-                            {
-                                videos.map((video) => (
-                                    <div key={video.socketId} >
-
-                                        <video
-                                            className="conferenceClients"
-                                            data-socket={video.socketId}
-                                            ref={
-                                                ref => {
-                                                    {
-                                                        if (ref && video.stream) {
-                                                            ref.srcObject = video.stream;
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            autoPlay
-
-                                        >
-                                        </video>
-
-
-                                    </div>
-                                ))
-                            }
                         </div>
                     </div>
 

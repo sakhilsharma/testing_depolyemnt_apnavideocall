@@ -3,12 +3,15 @@ import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
 import { IconButton } from "@mui/material";
 import HomeIcon from '@mui/icons-material/Home';
+import EventIcon from '@mui/icons-material/Event';
+import VideocamIcon from '@mui/icons-material/Videocam';
+
 export default function History() {
     const { getHistoryOfUser } = useContext(AuthContext);
 
@@ -37,41 +40,118 @@ export default function History() {
         return `${day}/${month}/${year}`
     }
     return (
-        <div>
-            <IconButton onClick={() => {
-                routeTo("/home");
-            }}>
+        <Box
+            sx={{
+                minHeight: '100vh',
+                width: '100%',
+                bgcolor: '#0f1115',
+                py: 4,
+                px: 2,
+                boxSizing: 'border-box',
+                overflowX: 'hidden'
+            }}
+        >
+            <IconButton
+                onClick={() => { routeTo("/home"); }}
+                sx={{
+                    color: '#e8e8e8',
+                    mb: 2,
+                    bgcolor: 'rgba(255,255,255,0.05)',
+                    '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' }
+                }}
+            >
                 <HomeIcon />
             </IconButton>
 
-            {
-                
+            <Box
+                sx={{
+                    width: '100%',
+                    maxWidth: 480,
+                    mx: 'auto',
+                    boxSizing: 'border-box'
+                }}
+            >
+                <Typography
+                    variant="h5"
+                    sx={{
+                        color: '#e8e8e8',
+                        fontWeight: 600,
+                        mb: 3,
+                        textAlign: 'center',
+                        letterSpacing: '-0.5px'
+                    }}
+                >
+                    Meeting History
+                </Typography>
+
+                {
                     meetings.length !== 0 ?
-                        meetings.map((e, idx) => {
-                            return (
-                                <>
+                        <Stack spacing={2} sx={{ width: '100%' }}>
+                            {meetings.map((e, idx) => (
+                                <Card
+                                    key={idx}
+                                    variant="outlined"
+                                    sx={{
+                                        width: '100%',
+                                        boxSizing: 'border-box',
+                                        bgcolor: '#1a1d24',
+                                        borderColor: 'rgba(255,255,255,0.08)',
+                                        borderRadius: 3,
+                                        overflow: 'hidden',
+                                        transition: 'transform 0.15s ease, border-color 0.15s ease',
+                                        '&:hover': {
+                                            borderColor: 'rgba(255,255,255,0.2)',
+                                            transform: 'translateY(-2px)'
+                                        }
+                                    }}
+                                >
+                                    <CardContent sx={{ '&:last-child': { pb: 2 }, minWidth: 0 }}>
+                                        <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1, minWidth: 0 }}>
+                                            <VideocamIcon sx={{ fontSize: 18, color: '#8b8f9a', flexShrink: 0 }} />
+                                            <Typography
+                                                sx={{
+                                                    color: '#e8e8e8',
+                                                    fontSize: 14,
+                                                    fontWeight: 500,
+                                                    wordBreak: 'break-all',
+                                                    overflowWrap: 'anywhere',
+                                                    minWidth: 0
+                                                }}
+                                            >
+                                                {e.meetingCode}
+                                            </Typography>
+                                        </Stack>
 
-                                    <Card key={idx} variant="outlined"></Card>
-
-                                    <CardContent>
-                                        <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-                                            Meeting Code : {e.meetingCode}
-                                        </Typography>
-
-                                        <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>
-                                            Date : {formatDate(e.date)}
-                                        </Typography>
-
+                                        <Chip
+                                            icon={<EventIcon sx={{ fontSize: 14 }} />}
+                                            label={formatDate(e.date)}
+                                            size="small"
+                                            sx={{
+                                                bgcolor: 'rgba(255,255,255,0.06)',
+                                                color: '#8b8f9a',
+                                                fontSize: 12,
+                                                '& .MuiChip-icon': { color: '#8b8f9a' }
+                                            }}
+                                        />
                                     </CardContent>
-
-                                </>
-                            )
-                        })
+                                </Card>
+                            ))}
+                        </Stack>
                         :
-                        <div>
-                        </div>
+                        <Box
+                            sx={{
+                                textAlign: 'center',
+                                py: 6,
+                                color: '#5a5e68'
+                            }}
+                        >
+                            <VideocamIcon sx={{ fontSize: 40, mb: 1, opacity: 0.4 }} />
+                            <Typography sx={{ fontSize: 14 }}>
+                                No meetings yet
+                            </Typography>
+                        </Box>
                 }
-            
-        </div>
+            </Box>
+        </Box>
     )
 }
