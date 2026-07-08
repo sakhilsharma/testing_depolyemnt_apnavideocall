@@ -7,7 +7,8 @@ let timeOnline = {};
 export const connectToSocket = (server) => {
     //setting connectiong with socket.io
     const allowedOrigins = [
-        "https://video-call-frontend-w9cp.onrender.com", 
+        "http://13.60.234.215",
+        "https://video-call-frontend-w9cp.onrender.com",
         "http://localhost:5173"
     ];
     const io = new Server(server, {
