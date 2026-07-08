@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nodemon app.js",
     "start": "node app.js",
-    "prod": "pm2 app.js",
+    "prod": "pm2 start app.js --name backend",
     "test": "jest"
   },
   "author": "sakhil",
@@ -19,6 +19,7 @@
     "http-status": "^2.1.0",
     "mongoose": "^8.16.0",
     "nodemon": "^3.1.10",
+    "pm2": "^7.0.3",
     "socket.io": "^4.8.1"
   },
   "devDependencies": {
