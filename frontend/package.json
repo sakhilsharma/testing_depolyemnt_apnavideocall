@@ -16,6 +16,7 @@
     "@mui/material": "^7.1.2",
     "axios": "^1.10.0",
     "http-status": "^2.1.0",
+    "jest": "^30.4.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.2",
