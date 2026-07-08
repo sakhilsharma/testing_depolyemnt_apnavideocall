@@ -8,8 +8,7 @@ on:
 
 jobs:
   backend:
-
-    runs-on: self-hosted
+    runs-on: ubuntu-latest #havent applied self hosted runner yet
 
     strategy:
       matrix:
@@ -18,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
@@ -32,7 +31,3 @@ jobs:
       - name: Build
         working-directory: backend
         run: npm run build --if-present
-
-      - name : Running CD on EC2
-        working-directory: backend
-        run : sudo pm2 restart backend
