@@ -10,7 +10,7 @@ import cors from "cors";
 import router from './src/routes/user.routes.js'
 //config for cors for production editing
 const allowedOrigins = [
-    "http://13.60.234.215",
+    "16.192.105.47",
     "https://video-call-frontend-w9cp.onrender.com",
     "http://localhost:5173"
 ];
