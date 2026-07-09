@@ -7,6 +7,7 @@ let timeOnline = {};
 export const connectToSocket = (server) => {
     //setting connectiong with socket.io
     const allowedOrigins = [
+        "https://apnavideocall.duckdns.org",
         "http://16.192.105.47",
         "https://video-call-frontend-w9cp.onrender.com",
         "http://localhost:5173"
