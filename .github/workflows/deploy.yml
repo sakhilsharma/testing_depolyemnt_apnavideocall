@@ -23,7 +23,7 @@ jobs:
       - name: Install frontend dependencies
         run: |
           cd /home/ubuntu/testing_depolyemnt_apnavideocall/frontend
-          npm ci
+          npm install
 
       - name: Build frontend
         run: |
