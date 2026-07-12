@@ -1,0 +1,35 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Pull latest code
+        run: |
+          cd /home/ubuntu/testing_depolyemnt_apnavideocall
+          git pull origin main
+
+      - name: Install backend dependencies
+        run: |
+          cd /home/ubuntu/testing_depolyemnt_apnavideocall/backend
+          npm ci
+
+      - name: Install frontend dependencies
+        run: |
+          cd /home/ubuntu/testing_depolyemnt_apnavideocall/frontend
+          npm ci
+
+      - name: Build frontend
+        run: |
+          cd /home/ubuntu/testing_depolyemnt_apnavideocall/frontend
+          npm run build
+
+      - name: Reload backend
+        run: |
+          pm2 reload backend
